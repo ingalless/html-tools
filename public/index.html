@@ -5,23 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ingalless' tools</title>
     <style>
-      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #121212; color: #e0e0e0; padding: 20px; line-height: 1.5; margin: 0; }
-      .view { display: none; max-width: 600px; margin: 40px auto; background: #1e1e1e; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+      body { font-family: monospace; background: #000; color: #e0e0e0; padding: 20px; line-height: 1.5; margin: 0; font-size: 18px; }
+      .view { display: none; max-width: 600px; margin: 40px auto; border: 2px solid green; padding: 30px; box-shadow: 5px 5px 200px -50px green; }
       .active { display: block; }
-      h1 { color: #8ab4f8; margin-top: 0; font-weight: 600; }
+      h1 { color: green; margin-top: 0; font-weight: 600; }
       h2 { color: #ffffff; margin-bottom: 20px; }
       label { display: block; margin-top: 15px; font-size: 0.85rem; color: #9aa0a6; }
-      input { width: 100%; padding: 12px; margin: 8px 0 18px 0; background: #2d2d2d; border: 1px solid #444; border-radius: 6px; box-sizing: border-box; color: #ffffff; font-size: 1rem; outline: none; transition: border-color 0.2s; }
+      input { width: 100%; padding: 12px; margin: 8px 0 18px 0; background: #2d2d2d; border: 1px solid #444; box-sizing: border-box; color: #ffffff; font-size: 1rem; outline: none; transition: border-color 0.2s; }
       input:focus { border-color: #8ab4f8; }
       input::placeholder { color: #666; }
-      canvas { display: block; margin: 25px auto; border: 12px solid #ffffff; background: #ffffff; border-radius: 4px; max-width: 100%; height: auto; }
-      .btn { display: inline-block; width: 100%; background: #8ab4f8; color: #121212; border: none; padding: 14px 20px; border-radius: 6px; cursor: pointer; text-decoration: none; font-weight: bold; font-size: 1rem; text-align: center; transition: background 0.2s; }
-      .btn:hover { background: #aecbfa; }
-      .link { color: #8ab4f8; text-decoration: none; display: block; margin-top: 20px; font-size: 0.9rem; }
+      canvas { display: block; margin: 25px auto; background: #000; max-width: 100%; height: auto; }
+      .btn { display: inline-block; width: 100%; background: #000; color: green; border: 2px solid green; padding: 14px 20px; cursor: pointer; text-decoration: none; font-weight: bold; font-size: 1rem; text-align: center; transition: background 0.2s; }
+      .btn:hover { background: rgba(0, 255, 0, 0.1); }
+      .link { color: green; text-decoration: none; display: block; margin-top: 20px; font-size: 1rem; }
       .link:hover { text-decoration: underline; }
-      .back-link { color: #9aa0a6; text-decoration: none; display: inline-block; margin-bottom: 20px; transition: color 0.2s; }
-      .back-link:hover { color: #8ab4f8; }
-      #fuel-result { margin-top: 25px; padding: 20px; border-radius: 8px; background: #252a33; border-left: 4px solid #8ab4f8; }
+      .back-link { font-size: 0.9rem; color: green; text-decoration: none; display: inline-block; margin-bottom: 20px; transition: color 0.2s; }
+      .back-link:hover { text-decoration: underline; }
+      #fuel-result { margin-top: 25px; padding: 20px; background: #252a33; border-left: 4px solid #8ab4f8; }
+      .input-group { text-align: left; max-width: 300px; margin: 0 auto; }
+      @media (max-width: 700px) {
+        body { padding: 0px; }
+        #home { margin: 0px; border: none; box-shadow: none; }
+        .view { margin: 0px; border: none; box-shadow: none; }
+        .input-group { max-width: none; }
+      }
     </style>
 </head>
 
@@ -41,7 +48,7 @@ const FUEL_EFFICIENCY = 55;
 <body>
     <div id="home" class="view active">
         <h1>Ingalless' tools</h1>
-        <p>Welcome. Grandma-approved tools only.</p>
+        <p>Welcome. Select a tool below.</p>
         <a href="#fuel" class="link">Fuel Calculator</a>
         <a href="#qr" class="link">QR Generator</a>
     </div>
@@ -49,17 +56,17 @@ const FUEL_EFFICIENCY = 55;
     <div id="qr" class="view">
         <a href="#" class="back-link">&larr; Back to Dashboard</a>
         <h1>QR Generator</h1>
-        <input type="text" onblur="tools.qr.generate()" id="qr-input" value="https://google.com" placeholder="Enter text...">
+        <input type="text" oninput="tools.qr.generate()" id="qr-input" placeholder="Enter text...">
         <canvas id="qr-canvas"></canvas>
     </div>
 
     <div id="fuel" class="view">
         <a href="#" class="back-link">&larr; Back to Dashboard</a>
         <div class="tool-card">
-            <h2>Fuel Cost Calculator</h2>
-            <p style="font-size: 0.9rem; color: #666;">Estimate journey costs based on UK metrics.</p>
-
-            <div class="input-group" style="text-align: left; max-width: 300px; margin: 0 auto;">
+            <h1>Fuel Cost Calculator</h1>
+            <p style="font-size: 0.9rem;">Estimate journey costs based on UK metrics.</p>
+            <br/>
+            <div class="input-group">
                 <label for="fuel-miles">Journey Distance (miles)</label>
                 <input type="number" id="fuel-miles" placeholder="e.g. 120" step="0.1">
 
@@ -71,7 +78,7 @@ const FUEL_EFFICIENCY = 55;
 
                 <button class="btn" style="width: 100%; margin-top: 10px;" onclick="tools.fuel.calculate()">Calculate Cost</button>
 
-                <p id="fuel-total" style="text-align: center;">Enter details to see cost...</p>
+                <p id="fuel-total" style="text-align: center; font-size: 0.9rem;">Enter details to see cost...</p>
             </div>
 
             <div id="fuel-result" style="margin-top: 20px; padding: 15px; border-radius: 4px; display: none; background: #e8f4fd;">
